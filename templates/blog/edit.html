@@ -43,7 +43,7 @@
     <div class="section">       
         公開中のPost一覧
         {% for p in pub_posts %}
-            <a href=""><p class="post-edit-pub">
+            <a href="{% url 'tabula_rasa:update_post' p.id %}"><p class="post-edit-pub">
                 <span class="post-title">
                     {{ p.post }}
                 </span>

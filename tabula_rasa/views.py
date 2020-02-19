@@ -216,12 +216,15 @@ class UpdatePost(UpdateView):
     success_url = reverse_lazy('tabula_rasa:edit')
     def form_valid(self, form):
         """もし公開済みのものを編集した場合には更新日時を更新し、そうでない場合には作成日を更新する"""
-        if is_public:
+        self.post = form.save(commit=False)
+        if self.post.is_public:
             update = True
         else:
             update = False
-        self.post = form.save(commit=False)
-        self.post.created_at = datetime.datetime.now()
+        if update:
+            self.post.update_at = datetime.datetime.now()
+        else:
+            self.post.created_at = datetime.datetime.now()
         self.post = form.save(commit=True)
         return redirect('tabula_rasa:edit')
 
@@ -248,7 +251,7 @@ def make_reply(request, pk, ppk):
         c_form = CommentForm()
         comment = Comment.objects.get(id=pk)
         introduction = Introduction.objects.get(in_id=1)
-        recent_posts = Post.objects.order_by('-created_at')[:5]
+        recent_posts = Post.objects.filter(is_public=True).order_by('-created_at')[:5]
         categories = Category.objects.filter(post__is_public=True).annotate(Count('kind'))
         s_form = SearchForm
         context = {

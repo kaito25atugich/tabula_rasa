@@ -2,7 +2,7 @@
 {% load blog_filter %}
 {% load widget_tweaks %}
 {% block main %}
-  {% if user.is_authenticated or is_public %}
+  {% if user.is_authenticated or post.is_public %}
     <div class="blog-page-header">
       <h2>{{ post.post }}</h2>
       <span class="category">
@@ -83,5 +83,9 @@
           }
         })};
     </script>
-  {% endif %}  
+  {% else %}
+  404 Not Found {{ request_path }}
+  お探しのページは存在しません。
+  <a class="a-blue" href="{% url 'tabula_rasa:forest_blog' %}">Topに戻る</a>
+  {% endif %}
 {% endblock %}

@@ -575,9 +575,9 @@ header {
     }
     &.post-paging {
       width: 30vw;
-      height: 5vw;
+      height: 18vh;
       @mixin mq-paging {
-        height: 20vw;
+        height: 15vh;
       }
       @include mq {
         @include mq-paging();
@@ -632,14 +632,31 @@ header {
   padding-left: 3vw;
 }
 .margin-j {
-  margin-top: 10vw;
-  margin-bottom: 5vw;
+  margin-top: 25vh;
 }
 .comment-list {
+  width: 60vw;
   padding: 2vw 0;
   line-height: 3vw;
   border-bottom: 1px solid #ccc;
   @mixin mq-comment-list {
+    width: 80vw;
+    line-height: 8vw;
+  }
+  @include mq {
+    @include mq-comment-list();
+  }
+  @include mq-md {
+    @include mq-comment-list();
+  }
+}
+.rep-comment-list {
+  width: calc(60vw * 95/100);
+  padding: 2vw 0;
+  line-height: 3vw;
+  border-bottom: 1px solid #ccc;
+  @mixin mq-comment-list {
+    width: calc(80vw * 90/100);
     line-height: 8vw;
   }
   @include mq {
@@ -656,6 +673,10 @@ header {
   &:hover {
     color: $a-blue-h;
   }
+}
+.rep-indent {
+  position: relative;
+  left: 3%;
 }
 .comment-wrapper {
   // @mixin mq-comment-wrapper {
@@ -733,10 +754,7 @@ visibility: visible;
     cursor: pointer;
   }
 }
-.rep-indent {
-  position: relative;
-  left: 5%;
-}
+
 @mixin mq-search {
     width: 50vw;
 }
