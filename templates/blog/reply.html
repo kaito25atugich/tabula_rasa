@@ -1,0 +1,17 @@
+  {% for c in repl_nee %}
+    <div class="comment-list rep-indent">
+      <div class="comment-name">
+        {{ c.name }}
+        <span class="date">{{ c.created_at }}</span>
+      </div>
+      {{ c.content | linebreaksbr }}
+      <p><a href="{% url 'tabula_rasa:make_reply' c.id post.id %}" class="comment-reply">
+        コメントに返信する
+      </a></p>
+    </div>
+    <div class="rep-indent">
+      {% with repl_nee=c.comment_set.all %}
+        {% include 'blog/reply.html' %}
+      {% endwith %}
+    </div>
+  {% endfor %}

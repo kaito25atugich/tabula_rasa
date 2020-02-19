@@ -1,0 +1,87 @@
+{% load static %}
+{% load blog_filter %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html>
+  <head lang="ja">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c|Nunito|Quicksand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.min.css' %}">
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="{% static 'js/blog.js' %}"></script>
+    <title>tabula rasa | タブララサ</title>
+  </head>
+  <body>
+    <div class="overLay"></div>
+    <header class="blog-header">
+      <div class="scroll-header" id="scroll-header">
+        <div class="title">
+          <a href="{% url 'tabula_rasa:forest_blog' %}">
+            <h1>Tubla Rasa</h1>
+            <p>タブララサ</p>
+          </a>
+        </div>
+      </div>
+    </header>
+    <div class="nav">
+      <div class="hum">
+        <div>
+          <span></span> <span></span> <span></span>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="{% url 'tabula_rasa:forest_blog' %}">BLOG-TOP</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="wrapper">
+      <main class="main">
+        <div class="section">
+    {% block main %}
+    {% endblock %}
+        </div>
+      </main>
+      <aside class="side-bar">
+        <div class="section">
+          <h3><i class="fas fa-user-check"></i>About Me</h3>
+          <p class="intro">{{ introduction.introduction | linebreaksbr }}</p>
+        </div>
+        <div class="section">
+          <h3><i class="fas fa-search"></i>Search</h3>
+          <form class="search" action="{% url 'tabula_rasa:search_result' %}" method="post">
+            {% csrf_token %}
+            {{ s_form.text | add_class:"form" }}
+            <input class="submit-button" type="submit" name="検索" value="検索"/>
+          </form>
+        </div>
+        <div class="section">
+          <h3><i class="far fa-clock"></i>Recent Post</h3>
+          {% for rp in recent_posts %}
+            <p class="side-post"><a href="{% url 'tabula_rasa:page' rp.id %}">{{ rp.post }}</a></p>
+          {% endfor %}
+        </div>
+        <!-- <div class="section">
+          <h3><i class="fas fa-crown"></i>Popular Post</h3>
+          <p class="side-post"><a href="#">NONE</a></p>
+        </div>
+        <div class="section"> -->
+          <h3><i class="fas fa-tags"></i>Category</h3>
+          {% for c in categories %}
+            <p class="side-category"><a href="{% url 'tabula_rasa:category_page' c.id %}">{{ c.kind }}({{ c.kind__count }})</a></p>
+          {% endfor %}
+        </div>
+      </aside>
+    </div>
+    <footer>
+      <div class="center">
+        Hi! My name is kaito!
+      </div>
+    </footer>
+  </body>
+</html>

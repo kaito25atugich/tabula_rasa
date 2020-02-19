@@ -1,0 +1,23 @@
+{% extends 'blog/blog_base.html' %}
+{% load widget_tweaks %}
+{% block main %}
+<div class="comment-list">
+  <div class="comment-name">
+    {{ comment.name }}
+    <span class="date">{{ comment.created_at }}</span>
+  </div>
+  {{ comment.content | linebreaksbr }}
+</div>
+このコメントに対する返信
+<p class="margin-j">
+  <form class="modal-reply" id="modal" action="{% url 'tabula_rasa:make_reply' pk ppk %}" method="post" data-ind>
+    {% csrf_token %}
+    <div class="margin-j">{{ c_form.name.label }}</div>
+      {{ c_form.name | add_class:"form" }}
+    <div class="margin-j">{{ c_form.content.label }}</div>
+      {{ c_form.content | add_class:"form"  }}
+    <input class="submit-button submit-comment margin-j modal-submit" type="submit" name="comment" value="comment">
+  </form>
+  {{ c_form.media }}
+</p>
+{% endblock %}

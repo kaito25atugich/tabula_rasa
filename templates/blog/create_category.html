@@ -1,0 +1,16 @@
+{% extends 'blog/blog_base.html' %}
+{% load widget_tweaks %}
+{% block main %}
+    <a class="a-blue section" href="{% url 'tabula_rasa:edit' %}">
+        ◀︎保存せずに、エディットに戻る
+    </a>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <label for="cate-kind">{{ form.kind.label }}</label>
+    <p class="section" id="cate-kind">{{ form.kind|add_class:'title-form' }}</p>
+    
+    <button type="submit">送信</button>
+    
+  </form>
+
+{% endblock %}

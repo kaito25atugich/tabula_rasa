@@ -1,0 +1,87 @@
+{% extends 'blog/blog_base.html' %}
+{% load blog_filter %}
+{% load widget_tweaks %}
+{% block main %}
+  {% if user.is_authenticated or is_public %}
+    <div class="blog-page-header">
+      <h2>{{ post.post }}</h2>
+      <span class="category">
+        <i class="fas fa-tags"></i>
+        {% for c in post.category.all %}
+          <a href="#">{{ c }}</a>
+        {% endfor %}
+      </span>
+      <span class="date">
+        <i class="far fa-edit"></i>{{ post.created_at.date }}
+        {% if post.updated_at %}
+          <i class="fas fa-redo"></i>{{ post.updated_at.date }}
+        {% endif %}
+      </span>
+    </div>
+
+    <div class="blog-page-content">
+      {{ post.content | markdown_to_html | linebreaksbr }}
+    </div>
+    <div class="paging">
+      {% if pre_post %}
+        <a class="previous page post-paging" href="{% url 'tabula_rasa:page_pre' post.id %}">
+          <p class="page-arrow">
+            前 : <p>{{ pre_post.post }}</p>
+          </p>
+        </a>
+      {% endif %}
+      <a class="home" href="{% url 'tabula_rasa:forest_blog' %}"><i class="fa fa-home"></i></a>
+      {% if nex_post %}
+        <a class="next page post-paging" href="{% url 'tabula_rasa:page_nex' post.id %}">
+          <p class="page-arrow">
+            次 : <p>{{ nex_post.post }}</p>
+          </p>
+        </a>
+      {% endif %}
+    </div>
+    <div class="section">
+      <h2 class="heading margin-j">Comment</h2>
+      <form class="" action="{% url 'tabula_rasa:make_comment' post.id %}" method="post">
+        {% csrf_token %}
+        <div class="margin-j">{{ c_form.name.label }}</div>
+        {{ c_form.name | add_class:"form" }}
+        <div class="margin-j">{{ c_form.content.label }}</div>
+        {{ c_form.content | add_class:"form"  }}
+        <input class="submit-button submit-comment margin-j" type="submit" name="comment" value="comment">
+      </form>
+      {{ c_form.media }}
+      {% if comment %}
+      <div class="comment-wrapper">
+        {% for c in comment %}
+          <div class="comment-list">
+            <div class="comment-name">
+              {{ c.name }}
+              <span class="date">{{ c.created_at }}</span>
+            </div>
+            {{ c.content | linebreaksbr }}
+            <p><a href="{% url 'tabula_rasa:make_reply' c.id post.id %}" class="comment-reply">
+              コメントに返信する
+            </a></p>
+          </div>
+          {% with repl_nee=c.comment_set.all %}
+            {% include 'blog/reply.html' %}
+          {% endwith %}
+        {% endfor %}
+      </div>
+      {% else %}
+        <p>コメントはまだありません</p>
+      {% endif %}
+    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+      const elements = document.getElementsByClassName('markdownx');
+      for (element of elements) {
+        element.addEventListener('markdownx.update', event => {
+          for (const block of document.querySelectorAll('pre code')) {
+            hljs.highlightBlock(block);
+          }
+        })};
+    </script>
+  {% endif %}  
+{% endblock %}

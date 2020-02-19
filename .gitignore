@@ -1,0 +1,12 @@
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media
+pass_settings.py
+settings.py
+.DS_Store
+urls.py
+Pipfile
+Pipfile.lock

@@ -1,0 +1,39 @@
+{% extends 'blog/blog_base.html' %}
+{% block main %}
+<h2>{{ text }} の検索結果: {{ post_reslt.count }}件</h2>
+{% for p in post_reslt %}
+  <a href="{% url 'tabula_rasa:page' p.id %}"><p class="post">
+    <span class="post-title">
+      {{ p.post }}
+    </span><br>
+    <span class="category">
+      <i class="fas fa-tags"></i>
+      {% for c in p.category.all %}
+        {{ c }}
+      {% endfor %}
+    </span>
+    <span class="date">
+      <i class="far fa-edit"></i>{{ p.created_at.date }}
+      {% if p.updated_at %}
+        <i class="fas fa-redo"></i>{{ p.updated_at.date }}
+      {% endif %}
+    </span>
+  </p></a>
+{% endfor %}
+<div class="paging">
+  {% if page_obj.has_previous %}
+    <a class="previous" href="?page={{ page_obj.previous_page_number }}">前へ</a>
+  {% endif %}
+  {% for num in page_obj.paginator.page_range %}
+    {% if page_obj.number == num %}
+      <a class="current-num" href="?page={{ num }}">{{ num }}</a>
+    {% else %}
+      <a href="?page={{ num }}">{{ num }}</a>
+    {% endif %}
+  {% endfor %}
+  / 全{{ page_obj.paginator.num_pages }}ページ
+  {% if page_obj.has_next %}
+    <a class="next" href="?page={{ page_obj.next_page_number }}">次へ</a>
+  {% endif %}
+</div>
+{% endblock %}

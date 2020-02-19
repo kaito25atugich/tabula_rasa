@@ -1,0 +1,13 @@
+{% extends 'blog/blog_base.html' %}
+
+{% block main %}
+<div class="wrapper">
+<form method="post">
+    {% csrf_token %}
+    <p>削除します。よろしいですか？</p>
+    <input class="btn btn-danger" type="submit" value="削除する">
+</form>
+
+<a class="a-blue section" href="{% url 'tabula_rasa:edit' %}">エディットへ戻る</a>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'blog/blog_base.html' %}
+{% block main %}
+{% if user.is_authenticated %}
+    <div class="section">
+        <p class="section">現在の紹介文</p>
+        <p class="section">
+            {{ introduction.introduction }}
+        </p>
+        <a class="a-blue" href="{% url 'tabula_rasa:update_profile' 1 %}">紹介文を変更する</a>
+    </div>
+    <div class="section">
+        <p>現在あるカテゴリー一覧</p>
+        {% for category in categories %}
+            <p>{{ category.kind }}<a class="a-blue" href="{% url 'tabula_rasa:delete_category' category.id %}">削除する</a></p>
+        {% endfor %}
+        <a class="a-blue" href="{% url 'tabula_rasa:create_category' %}">カテゴリーを作成する</a>
+    </div>
+    <div class="section">
+        <a class="a-blue" href="{% url 'tabula_rasa:create_post' %}">新しくPostを作成する</a>
+    </div>
+    <div class="section">
+        下書き中のPost一覧
+        {% for p in not_pub_posts %}
+            <a href="{% url 'tabula_rasa:update_post' p.id %}"><p class="post">
+                <span class="post-title">
+                    {{ p.post }}
+                </span><br>
+                <span class="category">
+                    <i class="fas fa-tags"></i>
+                    {% for c in p.category.all %}
+                        {{ c }}
+                    {% endfor %}
+                </span>
+                <span class="date">
+                    <i class="far fa-edit"></i>{{ p.created_at.date }}
+                    {% if p.updated_at %}
+                        <i class="fas fa-redo"></i>{{ p.updated_at.date }}
+                    {% endif %}
+                </span>
+            </p></a>
+        {% endfor %}
+    </div>
+    <div class="section">       
+        公開中のPost一覧
+        {% for p in pub_posts %}
+            <a href=""><p class="post-edit-pub">
+                <span class="post-title">
+                    {{ p.post }}
+                </span>
+                <span class="category">
+                    <i class="fas fa-tags"></i>
+                    {% for c in p.category.all %}
+                        {{ c }}
+                    {% endfor %}
+                </span>
+                <span class="date">
+                    <i class="far fa-edit"></i>{{ p.created_at.date }}
+                    {% if p.updated_at %}
+                        <i class="fas fa-redo"></i>{{ p.updated_at.date }}
+                    {% endif %}
+                </span>
+            </p></a>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

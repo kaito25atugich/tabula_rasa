@@ -1,0 +1,34 @@
+{% extends 'blog/blog_base.html' %}
+{% load widget_tweaks %}
+{% block main %}
+    <a class="a-blue section" href="{% url 'tabula_rasa:edit' %}">
+        ◀︎保存せずに、エディットに戻る
+    </a>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <label for="post-post">{{ form.post.label }}</label>
+    <p class="section" id="post-post">{{ form.post|add_class:'title-form' }}</p>
+    <label for="post-category">{{ form.category.label }}</label>
+    <p class="section" id="post-category">{{ form.category|add_class:'category-form' }}</p>
+    <label for="post-content">{{ form.content.label }}</label>
+    <p class="section" id="post-content">{{ form.content }}</p>
+    <p class="section"></p>
+    <label for="post-public">公開しますか？チェックなしで下書き保存します</label>
+    <p class="section" id="post-public">{{ form.is_public }}</p>
+    
+    <button type="submit">送信</button>
+    {{ form.media | linebreaksbr }}
+  </form>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    const elements = document.getElementsByClassName('markdownx');
+    for (element of elements) {
+      element.addEventListener('markdownx.update', event => {
+        for (const block of document.querySelectorAll('pre code')) {
+          hljs.highlightBlock(block);
+        }
+      });
+    }
+  </script>
+{% endblock %}

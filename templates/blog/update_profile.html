@@ -1,0 +1,10 @@
+{% extends 'blog/blog_base.html' %}
+{% block main %}
+<form method="POST" action="">
+    {% csrf_token %}
+    <label for="int-form">{{ form.introduction.label }}</label>
+    <div id=int-form>{{ form.introduction }}</div>
+
+    <button class="a-blue" type="submit">変更する</button>
+</form>
+{% endblock %}
